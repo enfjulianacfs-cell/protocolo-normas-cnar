@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo Interativo de Biossegurança - CnaR AP 5.1</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sus: {
+                            light: '#e6f4f1',
+                            primary: '#007baf',
+                            dark: '#005880',
+                            accent: '#2cbf7e'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for sidebar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <!-- TOP HEADER / BRANDING -->
+    <header class="bg-sus-dark text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-white p-2 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-truck-medical text-sus-dark text-2xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-blue-600 text-xs px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">SMS-RJ</span>
+                        <span class="bg-emerald-600 text-xs px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">AP 5.1</span>
+                    </div>
+                    <h1 class="text-lg md:text-xl font-bold">Consultório na Rua (CnaR)</h1>
+                </div>
+            </div>
+            
+            <div class="text-center md:text-right text-xs text-blue-100 border-t md:border-t-0 border-blue-800/50 pt-2 md:pt-0 w-full md:w-auto">
+                <p class="font-semibold text-white">POP-BIO-CnaR-001</p>
+                <p>Versão 01 | Elaboração: 25/05/2026</p>
+                <p class="italic text-[10px]">Autores: Julia Verli Rosa, Juliana, Luciana</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP WRAPPER -->
+    <div class="flex-1 max-w-7xl w-full mx-auto flex flex-col lg:flex-row">
+        
+        <!-- SIDEBAR NAVIGATION / SEARCH -->
+        <aside class="w-full lg:w-80 bg-white border-b lg:border-b-0 lg:border-r border-slate-200 p-4 lg:sticky lg:top-[68px] lg:h-[calc(100vh-68px)] flex flex-col shrink-0">
+            <!-- Search Widget -->
+            <div class="mb-4 relative">
+                <label for="searchInput" class="sr-only">Pesquisar protocolo</label>
+                <input type="text" id="searchInput" oninput="filterSections()" placeholder="Pesquisar termo..." class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sus-primary focus:border-sus-primary">
+                <i class="fa-solid fa-magnifying-glass text-slate-400 absolute left-3 top-3"></i>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="flex-1 overflow-y-auto space-y-1" id="navContainer">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 mb-1">Estrutura do POP</p>
+                
+                <button onclick="scrollToSection('sec-header')" class="nav-btn w-full text-left px-3 py-2 text-sm rounded-md transition-all font-medium text-sus-primary bg-sus-light border-l-4 border-sus-primary flex items-center justify-between">
+                    <span>Capa do Documento</span>
+                    <i class="fa-solid fa-file-contract text-xs"></i>
+                </button>
+                <button onclick="scrollToSection('sec-1')" class="nav-btn w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md transition-all border-l-4 border-transparent flex items-center justify-between">
+                    <span>1. Objetivo</span>
+                    <i class="fa-solid fa-bullseye text-xs text-slate-400"></i>
+                </button>
+                <button onclick="scrollToSection('sec-2')" class="nav-btn w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md transition-all border-l-4 border-transparent flex items-center justify-between">
+                    <span>2. Siglas</span>
+                    <i class="fa-solid fa-list text-xs text-slate-400"></i>
+                </button>
+                <button onclick="scrollToSection('sec-3')" class="nav-btn w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md transition-all border-l-4 border-transparent flex items-center justify-between">
+                    <span>3. Alcance</span>
+                    <i class="fa-solid fa-arrows-to-eye text-xs text-slate-400"></i>
+                </button>
+                <button onclick="scrollToSection('sec-4')" class="nav-btn w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md transition-all border-l-4 border-transparent flex items-center justify-between">
+                    <span>4. Responsabilidades</span>
+                    <i class="fa-solid fa-users-gear text-xs text-slate-400"></i>
+                </button>
+                <button onclick="scrollToSection('sec-5')" class="nav-btn w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md transition-all border-l-4 border-transparent flex items-center justify-between">
+                    <span>5. EPIs e Equipamentos</span>
+                    <i class="fa-solid fa-shield-halved text-xs text-slate-400"></i>
+                </button>
+                <button onclick="scrollToSection('sec-6')" class="nav-btn w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md transition-all border-l-4 border-transparent flex items-center justify-between">
+                    <span>6. Higiene das Mãos</span>
+                    <i class="fa-solid fa-hands-bubbles text-xs text-slate-400"></i>
+                </button>
+                <button onclick="scrollToSection('sec-7')" class="nav-btn w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md transition-all border-l-4 border-transparent flex items-center justify-between">
+                    <span>7. Limpeza e Desinfecção</span>
+                    <i class="fa-solid fa-soap text-xs text-slate-400"></i>
+                </button>
+                <button onclick="scrollToSection('sec-8')" class="nav-btn w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md transition-all border-l-4 border-transparent flex items-center justify-between">
+                    <span>8. Manejo de Perfurocortantes</span>
+                    <i class="fa-solid fa-scissors text-xs text-slate-400"></i>
+                </button>
+                <button onclick="scrollToSection('sec-9')" class="nav-btn w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md transition-all border-l-4 border-transparent flex items-center justify-between font-semibold text-amber-700 bg-amber-50">
+                    <span>9. Acidentes Biológicos ⚠️</span>
+                    <i class="fa-solid fa-kit-medical text-xs text-amber-500"></i>
+                </button>
+                <button onclick="scrollToSection('sec-10')" class="nav-btn w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md transition-all border-l-4 border-transparent flex items-center justify-between">
+                    <span>10. Gerenciamento de Resíduos</span>
+                    <i class="fa-solid fa-trash-can text-xs text-slate-400"></i>
+                </button>
+                <button onclick="scrollToSection('sec-11')" class="nav-btn w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md transition-all border-l-4 border-transparent flex items-center justify-between">
+                    <span>11. Imunização da Equipe</span>
+                    <i class="fa-solid fa-syringe text-xs text-slate-400"></i>
+                </button>
+                
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 pt-3 mb-1">Ferramentas de Apoio</p>
+                <button onclick="scrollToSection('sec-checklist')" class="nav-btn w-full text-left px-3 py-2 text-sm rounded-md transition-all font-semibold text-emerald-700 bg-emerald-50 border-l-4 border-emerald-500 flex items-center justify-between">
+                    <span>12. Checklist Diário 📱</span>
+                    <i class="fa-solid fa-circle-check text-xs text-emerald-500"></i>
+                </button>
+                <button onclick="scrollToSection('sec-13')" class="nav-btn w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md transition-all border-l-4 border-transparent flex items-center justify-between">
+                    <span>13. Referências</span>
+                    <i class="fa-solid fa-bookmark text-xs text-slate-400"></i>
+                </button>
+            </div>
+            
+            <!-- Quick Contacts Info -->
+            <div class="mt-4 pt-4 border-t border-slate-200 text-[11px] text-slate-500 space-y-1">
+                <p class="font-bold text-slate-700"><i class="fa-solid fa-circle-info mr-1"></i> Contatos Rápidos AP 5.1:</p>
+                <p>Referência PEP: UPA Realengo / UPA Bangu</p>
+                <p>Vigilância Epidemiológica AP 5.1: (21) Xxxx-Xxxx</p>
+            </div>
+        </aside>
+
+        <!-- DOCUMENT CONTENT AREA -->
+        <main class="flex-1 bg-white p-4 md:p-8 overflow-y-auto" id="contentArea">
+            
+            <!-- DOCUMENT CAPA/HEADER (sec-header) -->
+            <section id="sec-header" class="mb-12 border-b-2 border-slate-300 pb-8 section-block">
+                <div class="border-2 border-slate-800 p-6 rounded-lg bg-slate-50 shadow-inner">
+                    <div class="grid grid-cols-1 md:grid-cols-3 border-b-2 border-slate-800 pb-4 mb-4 text-center md:text-left gap-4">
+                        <div class="flex flex-col justify-center font-bold text-slate-800 uppercase tracking-wide">
+                            <span class="text-xl">Rio Prefeitura</span>
+                            <span class="text-sm text-sus-primary">Saúde da Família / Atenção Primária</span>
+                        </div>
+                        <div class="flex flex-col justify-center items-center font-bold border-y-2 md:border-y-0 md:border-x-2 border-slate-800 py-3 md:py-0 text-slate-800">
+                            <span class="text-lg">CnaR AP 5.1</span>
+                            <span class="text-xs text-slate-600">Procedimento Operacional Padrão</span>
+                        </div>
+                        <div class="flex flex-col justify-center items-center md:items-end text-xs text-slate-700">
+                            <p class="font-bold text-sm text-slate-900">POP-BIO-CnaR-001</p>
+                            <p>Elaboração: 25/05/2026</p>
+                            <p class="font-semibold text-emerald-700">Versão: 01 (Vigente)</p>
+                        </div>
+                    </div>
+                    
+                    <h2 class="text-xl md:text-2xl font-extrabold text-slate-900 text-center uppercase tracking-wide py-4">
+                        Normas de Biossegurança para Profissionais do Consultório na Rua
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t border-slate-300 text-xs text-slate-600">
+                        <div>
+                            <p class="font-bold uppercase text-slate-800">Elaborado por:</p>
+                            <p>Julia Verli Rosa</p>
+                            <p>Juliana</p>
+                            <p>Luciana</p>
+                        </div>
+                        <div>
+                            <p class="font-bold uppercase text-slate-800">Revisado por:</p>
+                            <p class="italic text-slate-400">Área Técnica - AP 5.1 / SMS-RJ</p>
+                        </div>
+                        <div>
+                            <p class="font-bold uppercase text-slate-800">Autorizado por:</p>
+                            <p class="italic text-slate-400">Coordenação Geral de Atenção Primária AP 5.1</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1. OBJETIVO -->
+            <section id="sec-1" class="mb-10 section-block">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="bg-sus-primary text-white p-1 rounded"><i class="fa-solid fa-bullseye w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">1) Objetivo</h3>
+                </div>
+                <p class="text-slate-700 leading-relaxed text-sm">
+                    Objetiva estabelecer diretrizes e medidas de biossegurança para prevenção e controle dos riscos ocupacionais, visando à proteção da saúde e segurança dos trabalhadores atuantes do Consultório na Rua durante as atividades desenvolvidas, em conformidade com a <strong>NR-32</strong> e demais normas sanitárias vigentes.
+                </p>
+            </section>
+
+            <!-- 2. SIGLAS -->
+            <section id="sec-2" class="mb-10 section-block">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="bg-sus-primary text-white p-1 rounded"><i class="fa-solid fa-list w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">2) Siglas</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 flex gap-3">
+                        <span class="font-bold text-sus-primary text-sm min-w-[70px]">CnaR</span>
+                        <span class="text-slate-700">Consultório na Rua</span>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 flex gap-3">
+                        <span class="font-bold text-sus-primary text-sm min-w-[70px]">EPI</span>
+                        <span class="text-slate-700">Equipamento de Proteção Individual</span>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 flex gap-3">
+                        <span class="font-bold text-sus-primary text-sm min-w-[70px]">IST</span>
+                        <span class="text-slate-700">Infecção Sexualmente Transmissível</span>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 flex gap-3">
+                        <span class="font-bold text-sus-primary text-sm min-w-[70px]">RSS</span>
+                        <span class="text-slate-700">Resíduos de Serviços de Saúde</span>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 flex gap-3">
+                        <span class="font-bold text-sus-primary text-sm min-w-[70px]">PGRSS</span>
+                        <span class="text-slate-700">Plano de Gerenciamento de Resíduos de Serviços de Saúde</span>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 flex gap-3">
+                        <span class="font-bold text-sus-primary text-sm min-w-[70px]">PEP</span>
+                        <span class="text-slate-700">Profilaxia Pós-Exposição (Biológica)</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. ALCANCE -->
+            <section id="sec-3" class="mb-10 section-block">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="bg-sus-primary text-white p-1 rounded"><i class="fa-solid fa-arrows-to-eye w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">3) Alcance</h3>
+                </div>
+                <p class="text-slate-700 leading-relaxed text-sm">
+                    Toda a equipe multiprofissional atuante no Consultório na Rua da AP 5.1.
+                </p>
+            </section>
+
+            <!-- 4. RESPONSABILIDADES -->
+            <section id="sec-4" class="mb-10 section-block">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="bg-sus-primary text-white p-1 rounded"><i class="fa-solid fa-users-gear w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">4) Responsabilidades</h3>
+                </div>
+                <div class="space-y-3 text-sm text-slate-700">
+                    <p>
+                        A responsabilidade do cumprimento deste procedimento é de todos os profissionais envolvidos na execução dos processos de trabalho, a saber:
+                    </p>
+                    <div class="flex flex-wrap gap-2 py-2">
+                        <span class="bg-slate-100 text-slate-800 text-xs px-3 py-1.5 rounded-full font-medium border border-slate-200"><i class="fa-solid fa-users mr-1 text-slate-500"></i> Agente Social</span>
+                        <span class="bg-slate-100 text-slate-800 text-xs px-3 py-1.5 rounded-full font-medium border border-slate-200"><i class="fa-solid fa-hands-holding-child mr-1 text-slate-500"></i> Assistente Social</span>
+                        <span class="bg-slate-100 text-slate-800 text-xs px-3 py-1.5 rounded-full font-medium border border-slate-200"><i class="fa-solid fa-tooth mr-1 text-slate-500"></i> Auxiliar de Saúde Bucal</span>
+                        <span class="bg-slate-100 text-slate-800 text-xs px-3 py-1.5 rounded-full font-medium border border-slate-200"><i class="fa-solid fa-user-nurse mr-1 text-slate-500"></i> Enfermeiro</span>
+                        <span class="bg-slate-100 text-slate-800 text-xs px-3 py-1.5 rounded-full font-medium border border-slate-200"><i class="fa-solid fa-user-doctor mr-1 text-slate-500"></i> Médico</span>
+                        <span class="bg-slate-100 text-slate-800 text-xs px-3 py-1.5 rounded-full font-medium border border-slate-200"><i class="fa-solid fa-car mr-1 text-slate-500"></i> Motorista</span>
+                        <span class="bg-slate-100 text-slate-800 text-xs px-3 py-1.5 rounded-full font-medium border border-slate-200"><i class="fa-solid fa-brain mr-1 text-slate-500"></i> Psicólogo</span>
+                        <span class="bg-slate-100 text-slate-800 text-xs px-3 py-1.5 rounded-full font-medium border border-slate-200"><i class="fa-solid fa-user-shield mr-1 text-slate-500"></i> Técnico de Enfermagem</span>
+                    </div>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mt-2">
+                        <div class="flex gap-2">
+                            <i class="fa-solid fa-circle-exclamation text-blue-600 mt-1"></i>
+                            <div>
+                                <p class="font-bold text-blue-900 text-sm">Atribuição Crítica e Rotina Diária:</p>
+                                <p class="text-xs text-blue-800">O preenchimento do checklist antes da saída para as ruas é atribuição privativa do <strong>Técnico de Enfermagem</strong> da equipe, que deve validar a carga de insumos de segurança na unidade móvel.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. EPIS -->
+            <section id="sec-5" class="mb-10 section-block">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="bg-sus-primary text-white p-1 rounded"><i class="fa-solid fa-shield-halved w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">5) Equipamentos de Proteção Individual (EPIs)</h3>
+                </div>
+                <p class="text-slate-700 leading-relaxed text-sm mb-6">
+                    Devido às especificidades do trabalho territorial, os Equipamentos de Proteção Individual (EPIs) utilizados no Consultório na Rua devem contemplar não apenas os riscos biológicos, mas também os riscos ambientais, climáticos, ocupacionais e de segurança urbana presentes no campo.
+                </p>
+
+                <!-- 5.1 EPIs Respiratórios -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-bold text-slate-900 bg-slate-100 px-3 py-2 rounded mb-3 flex items-center justify-between">
+                        <span>5.1 EPIs Respiratórios (Prevenção TB e Vias Aéreas)</span>
+                        <i class="fa-solid fa-head-side-mask text-slate-500"></i>
+                    </h4>
+                    <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold uppercase">
+                                    <th class="p-3 w-1/4">EPI</th>
+                                    <th class="p-3 w-1/2">Indicação de Uso</th>
+                                    <th class="p-3 w-1/4">Finalidade</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-600">
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">PFF2 / N95</td>
+                                    <td class="p-3">Uso pelo profissional durante atendimento de sintomáticos respiratórios, suspeitos/confirmados de TB (Tuberculose) e investigação de contactantes.</td>
+                                    <td class="p-3 font-medium">Filtração de aerossóis e proteção respiratória do trabalhador.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Máscara Cirúrgica (Usuário)</td>
+                                    <td class="p-3">Fornecida ao usuário sintomático respiratório durante acolhimento, entrevista e atendimento clínico.</td>
+                                    <td class="p-3 font-medium">Redução da dispersão de gotículas respiratórias no ambiente.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Máscara Cirúrgica (Profissional)</td>
+                                    <td class="p-3">Ambientes fechados, interior da unidade móvel (van) ou períodos de aumento epidemiológico de circulação viral.</td>
+                                    <td class="p-3 font-medium">Barreira física contra gotículas respiratórias.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 5.2 EPIs Risco Biológico -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-bold text-slate-900 bg-slate-100 px-3 py-2 rounded mb-3 flex items-center justify-between">
+                        <span>5.2 EPIs Risco Biológico (Procedimentos Clínicos)</span>
+                        <i class="fa-solid fa-biohazard text-red-500"></i>
+                    </h4>
+                    <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold uppercase">
+                                    <th class="p-3 w-1/4">EPI</th>
+                                    <th class="p-3 w-1/2">Indicação de Uso</th>
+                                    <th class="p-3 w-1/4">Finalidade</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-600">
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Luvas de Procedimento</td>
+                                    <td class="p-3">Realização de curativos, testes rápidos, coleta de material biológico e contato com pele não íntegra ou lesões.</td>
+                                    <td class="p-3 font-medium">Proteção contra contaminação biológica em contato com fluidos.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Avental Descartável Impermeável</td>
+                                    <td class="p-3">Curativos complexos, limpeza de lesões exsudativas e risco iminente de respingos de fluidos corporais.</td>
+                                    <td class="p-3 font-medium">Proteção da roupa e pele íntegra do profissional.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Óculos ou Protetor Facial (Face Shield)</td>
+                                    <td class="p-3">Lavagem de feridas profundas e procedimentos clínicos com possibilidade de respingos intensos.</td>
+                                    <td class="p-3 font-medium">Proteção da mucosa ocular e face ampliada contra aerossóis/líquidos.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Touca Descartável</td>
+                                    <td class="p-3">Situações específicas de maior exposição biológica ou lavagem intensa de feridas.</td>
+                                    <td class="p-3 font-medium">Redução de contaminação capilar ou queda de fios em feridas.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 5.3 EPIs de Proteção Ambiental e Climática -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-bold text-slate-900 bg-slate-100 px-3 py-2 rounded mb-3 flex items-center justify-between">
+                        <span>5.3 EPIs de Proteção Ambiental e Climática</span>
+                        <i class="fa-solid fa-cloud-sun text-amber-500"></i>
+                    </h4>
+                    <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold uppercase">
+                                    <th class="p-3 w-1/4">EPI</th>
+                                    <th class="p-3 w-1/2">Indicação de Uso</th>
+                                    <th class="p-3 w-1/4">Finalidade</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-600">
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Protetor Solar</td>
+                                    <td class="p-3">Uso diário contínuo em todas as atividades externas no território.</td>
+                                    <td class="p-3 font-medium">Proteção contra radiação ultravioleta (UVA/UVB) nociva à pele.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Boné ou Chapéu</td>
+                                    <td class="p-3">Exposição solar direta e prolongada em ações de campo no território de atuação.</td>
+                                    <td class="p-3 font-medium">Proteção térmica e radiação solar na cabeça e olhos.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Capa de Chuva / Impermeável</td>
+                                    <td class="p-3">Atividades de busca ativa ou acolhimento em períodos chuvosos.</td>
+                                    <td class="p-3 font-medium">Proteção contra umidade e intempéries climáticas adversas.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Repelente</td>
+                                    <td class="p-3">Áreas com presença confirmada de insetos e alta endemicidade de vetores de doenças.</td>
+                                    <td class="p-3 font-medium">Prevenção de picadas e infecção por arboviroses (Dengue, Zika, Chikungunya).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 5.4 EPIs de Proteção Física e Segurança Ocupacional -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-bold text-slate-900 bg-slate-100 px-3 py-2 rounded mb-3 flex items-center justify-between">
+                        <span>5.4 EPIs de Proteção Física e Segurança Ocupacional</span>
+                        <i class="fa-solid fa-person-falling text-orange-500"></i>
+                    </h4>
+                    <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold uppercase">
+                                    <th class="p-3 w-1/4">EPI / Item</th>
+                                    <th class="p-3 w-1/2">Indicação de Uso</th>
+                                    <th class="p-3 w-1/4">Finalidade</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-600">
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Calçado Fechado Antiderrapante</td>
+                                    <td class="p-3">Uso obrigatório durante todo o trabalho de campo (proibido o uso de calçados abertos).</td>
+                                    <td class="p-3 font-medium">Proteção mecânica contra perfurações no solo, quedas e contato direto com resíduos urbanos.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Bota Impermeável</td>
+                                    <td class="p-3">Áreas alagadas, lama, terrenos baldios, lixo acumulado ou proximidade a redes de esgoto aberto.</td>
+                                    <td class="p-3 font-medium">Proteção contra patógenos ambientais (como Leptospirose) e contaminação por contato.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Colete de Identificação Institucional</td>
+                                    <td class="p-3">Uso mandatório em todas as ações territoriais e deslocamentos pelas ruas.</td>
+                                    <td class="p-3 font-medium">Identificação institucional imediata perante a comunidade e proteção de segurança urbana.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Jaqueta Refletiva</td>
+                                    <td class="p-3">Ações e atividades noturnas ou em vias públicas de intenso movimento de tráfego.</td>
+                                    <td class="p-3 font-medium">Segurança viária por meio de alta visibilidade do trabalhador.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Lanterna Portátil</td>
+                                    <td class="p-3">Atendimentos em becos, residências improvisadas, viadutos ou áreas com baixíssima luminosidade natural.</td>
+                                    <td class="p-3 font-medium">Segurança assistencial e ocupacional preventiva de quedas/riscos.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 5.5 Equipamentos Auxiliares de Biossegurança -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-bold text-slate-900 bg-slate-100 px-3 py-2 rounded mb-3 flex items-center justify-between">
+                        <span>5.5 Equipamentos Auxiliares de Biossegurança</span>
+                        <i class="fa-solid fa-briefcase text-teal-600"></i>
+                    </h4>
+                    <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold uppercase">
+                                    <th class="p-3 w-1/4">Equipamento</th>
+                                    <th class="p-3 w-1/2">Indicação de Uso</th>
+                                    <th class="p-3 w-1/4">Finalidade</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-600">
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Álcool 70% Portátil</td>
+                                    <td class="p-3">Uso individual para higiene de mãos em trânsito ou no campo de atuação.</td>
+                                    <td class="p-3 font-medium">Antissepsia das mãos para prevenção de transmissão cruzada.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Maleta ou Mochila Estanque</td>
+                                    <td class="p-3">Para o transporte de materiais clínicos, vacinas, insumos gerais e EPIs reservas.</td>
+                                    <td class="p-3 font-medium">Barreira impermeável, assegurando isolamento entre materiais limpos e contaminados.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Coletor Portátil de Perfurocortantes</td>
+                                    <td class="p-3">Uso imediato após realização de aplicações injetáveis e aplicação de testes rápidos em campo.</td>
+                                    <td class="p-3 font-medium">Descarte imediato e seguro contra acidentes com agulhas ou lancetas.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-900">Luvas de Limpeza Reforçadas (Borracha)</td>
+                                    <td class="p-3">Mecanismos de higienização interna das superfícies da van, recolhimento de lixo e higienização.</td>
+                                    <td class="p-3 font-medium">Proteção mecânica contra cortes e proteção química contra produtos saneantes.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. HIGIENIZAÇÃO DAS MÃOS -->
+            <section id="sec-6" class="mb-10 section-block">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="bg-sus-primary text-white p-1 rounded"><i class="fa-solid fa-hands-bubbles w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">6) Higienização das Mãos</h3>
+                </div>
+                <div class="text-sm text-slate-700 space-y-3 leading-relaxed">
+                    <p>
+                        Todo local onde exista possibilidade de exposição ao agente biológico deve dispor de lavatório exclusivo para higiene das mãos provido de <strong>água corrente, sabonete líquido, toalha descartável e lixeira de pedal com tampa articulada (abertura sem contato manual)</strong>.
+                    </p>
+                    <p class="font-semibold text-slate-900"><i class="fa-solid fa-map-location-dot text-teal-600 mr-1"></i> Estratégia de Pontos de Apoio e Parcerias no Território:</p>
+                    <p>
+                        Pela natureza itinerante do trabalho em via pública, quando o profissional não dispuser de pia na unidade móvel imediata, a higienização convencional deve ser programada de maneira coordenada, utilizando-se dos seguintes **pontos de apoio e parceiros** presentes no mapa territorial da AP 5.1:
+                    </p>
+                    <ul class="list-disc pl-5 space-y-1 text-slate-600 bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <li><strong>Unidades de Atenção Primária:</strong> Clínicas da Família (Ex: CF Faim Pedro e demais unidades de apoio territorial) e CMS regionais.</li>
+                        <li><strong>Instituições Religiosas de Apoio:</strong> Igrejas, templos e paróquias parceiras das ações de acolhimento.</li>
+                        <li><strong>Equipamentos Sociais:</strong> Centros Pop, abrigos municipais ou centros comunitários que colaboram com o atendimento das equipes de rua.</li>
+                        <li><strong>Dispositivo Móvel de Emergência:</strong> Na ausência absoluta de lavatórios com água corrente, deve-se proceder à <strong>fricção antisséptica constante com álcool 70% portátil</strong> até a chegada à base de apoio física mais próxima.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 7. LIMPEZA E DESINFECÇÃO -->
+            <section id="sec-7" class="mb-10 section-block">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="bg-sus-primary text-white p-1 rounded"><i class="fa-solid fa-soap w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">7) Limpeza e Desinfecção</h3>
+                </div>
+                <div class="text-sm text-slate-700 space-y-4">
+                    <p>
+                        Estabelece diretrizes seguras para os processos de limpeza (remoção mecânica de sujidades) e desinfecção (destruição microbiana química) no ambiente itinerante da Unidade Móvel (Van) e do mobiliário de apoio do CnaR.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="border border-slate-200 p-4 rounded-lg bg-slate-50">
+                            <h4 class="font-bold text-slate-900 mb-2 border-b pb-1 text-xs uppercase text-sus-primary"><i class="fa-solid fa-graduation-cap mr-1"></i> Regras de Treinamento e Segurança</h4>
+                            <ul class="list-disc pl-5 space-y-2 text-xs text-slate-600">
+                                <li><strong>Treinamento:</strong> Todos os profissionais da limpeza devem receber capacitação inicial e continuada abordando princípios de higiene pessoal, riscos biológicos e químicos, rotulagem e uso correto de EPIs.</li>
+                                <li><strong>Adornos:</strong> É expressamente proibido o uso de qualquer adorno pessoal (anéis, pulseiras, relógios) durante as atividades de desinfecção.</li>
+                                <li><strong>Proibições no Trabalho:</strong> Durante o trabalho e a desinfecção da van, é vetado o ato de fumar, consumir alimentos/bebidas, guardar alimentos em locais inadequados ou utilizar calçados abertos.</li>
+                            </ul>
+                        </div>
+
+                        <div class="border border-slate-200 p-4 rounded-lg bg-slate-50">
+                            <h4 class="font-bold text-slate-900 mb-2 border-b pb-1 text-xs uppercase text-sus-primary"><i class="fa-solid fa-flask mr-1"></i> Manuseio de Saneantes Químicos</h4>
+                            <ul class="list-disc pl-5 space-y-2 text-xs text-slate-600">
+                                <li><strong>Embalagem Original:</strong> Manter produtos preferencialmente nas embalagens originais devidamente rotuladas pelo fabricante para evitar erros.</li>
+                                <li><strong>Fracionamento Identificado:</strong> Caso seja necessário transferir produtos de limpeza para recipientes menores para caber na van, o frasco menor deve conter rótulo legível contendo:
+                                    <div class="bg-white p-2 rounded border border-slate-200 mt-1 font-mono text-[10px] text-slate-500">
+                                        Nome do Produto | Concentração | Data Envase & Validade | Responsável técnico
+                                    </div>
+                                </li>
+                                <li><strong>Reutilização Proibida:</strong> É estritamente vedado reutilizar embalagens vazias de produtos químicos saneantes para qualquer outro fim assistencial ou doméstico.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 p-4 rounded-lg">
+                        <h4 class="font-bold text-slate-900 mb-3 text-sm text-sus-primary flex items-center justify-between">
+                            <span>Procedimentos Técnicos Operacionais</span>
+                            <i class="fa-solid fa-clipboard-list"></i>
+                        </h4>
+                        <ul class="space-y-3 text-xs text-slate-600">
+                            <li class="flex gap-2">
+                                <i class="fa-solid fa-ban text-red-500 mt-0.5"></i>
+                                <span><strong>Proibição Absoluta de Varrição Seca:</strong> É expressamente proibido realizar varrição a seco interna na van. O piso e as superfícies de apoio devem ser limpos unicamente através de métodos úmidos (panos úmidos associados a desinfetantes ou detergente).</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <i class="fa-solid fa-shield-virus text-teal-600 mt-0.5"></i>
+                                <span><strong>Revestimento de Macas e Colchonetes:</strong> Os colchões, macas e assentos estofados utilizados nos atendimentos externos devem ser revestidos com material liso, lavável e impermeável, assegurando desinfecção prática com álcool 70% ou hipoclorito a cada paciente.</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <i class="fa-solid fa-magnifying-glass-chart text-blue-600 mt-0.5"></i>
+                                <span><strong>Inspeção do Revestimento:</strong> A equipe técnica deve vistoriar periodicamente os revestimentos da maca de atendimento. Não são admitidos rasgos, furos ou reentrâncias que possam acumular secreções biológicas ou prejudicar a adequada lavagem e desinfecção.</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <i class="fa-solid fa-shirt text-indigo-600 mt-0.5"></i>
+                                <span><strong>Regras de Higiene de Vestuário:</strong> O empregador deve ceder gratuitamente EPIs e uniformes adequados. O uso de luvas nunca anula a necessidade de lavagem de mãos. É vedado sair para ambientes externos ao serviço portando o jaleco ou vestuário de exposição biológica. A desinfecção de uniformes com carga orgânica é dever do empregador.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. MANEJO DE PERFUROCORTANTES -->
+            <section id="sec-8" class="mb-10 section-block">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="bg-sus-primary text-white p-1 rounded"><i class="fa-solid fa-scissors w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">8) Manejo de Perfurocortantes</h3>
+                </div>
+                <div class="text-sm text-slate-700 space-y-4">
+                    <p>
+                        Diretrizes cruciais de segurança operacional para prevenção de acidentes percutâneos graves em ambiente de rua:
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-amber-900 text-sm mb-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Descarte de Responsabilidade Única</h4>
+                            <p class="text-xs text-amber-800">
+                                O profissional gerador (aquele que utilizou a agulha, bisturi ou lanceta de teste rápido) é o <strong>único e exclusivo responsável pelo seu correto descarte</strong> imediato em caixa rígida para perfurocortantes.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-red-500 bg-red-50 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-red-900 text-sm mb-1"><i class="fa-solid fa-ban mr-1"></i> Proibição de Reencape Manual</h4>
+                            <p class="text-xs text-red-800">
+                                É <strong>terminantemente proibido reencapar agulhas</strong> ou realizar a desconexão manual do complexo agulha-seringa. O descarte deve ser do conjunto inteiro ou com auxílio mecânico seguro de pinça quando previsto pelo fabricante.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg space-y-2 text-xs text-slate-600">
+                        <p class="font-bold text-slate-800 uppercase">Regras de Capacidade e Transporte de Resíduos:</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>Capacidade Máxima dos Sacos de Resíduos:</strong> Os sacos de lixo (Grupo A infectantes ou Grupo D comum) devem ser preenchidos até, no máximo, <strong class="text-slate-800">$\frac{2}{3}$ de sua capacidade total</strong>, permitindo fechamento estanque e firme que impeça vazamentos, inclusive se virados para baixo.</li>
+                            <li><strong>Arraste Proibido:</strong> Ao transportar sacos de resíduos para fora da van, o profissional deve mantê-los afastados de seu corpo, sendo completamente vedado o ato de arrastar os sacos de lixo pelo piso ou solo.</li>
+                            <li><strong>Limite do Coletor Rígido:</strong> A caixa rígida de perfurocortantes deve ser monitorada diariamente e substituída quando atingir a marca de segurança, localizada a **5 cm abaixo do bocal**.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. ACIDENTE COM MATERIAL BIOLÓGICO -->
+            <section id="sec-9" class="mb-10 section-block bg-amber-50/40 p-4 md:p-6 rounded-xl border border-amber-200">
+                <div class="flex items-center gap-2 mb-4 border-b border-amber-200 pb-2">
+                    <span class="bg-amber-600 text-white p-1 rounded"><i class="fa-solid fa-circle-exclamation w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">9) Acidente com Material Biológico (Fluxo Interativo)</h3>
+                </div>
+                
+                <p class="text-slate-700 leading-relaxed text-sm mb-6">
+                    A exposição ocupacional a material biológico (sangue, fluidos orgânicos, perfurações de agulhas usadas) requer atuação imediata. Siga o fluxo interativo abaixo ou acesse o passo a passo técnico.
+                </p>
+
+                <!-- INTERACTIVE FLOW WIDGET -->
+                <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm mb-6">
+                    <h4 class="font-bold text-slate-900 text-sm mb-3 text-sus-dark"><i class="fa-solid fa-arrows-spin mr-1"></i> Guia Interativo: Conduta Imediata de Emergência</h4>
+                    
+                    <div id="flow-step-1">
+                        <p class="text-xs text-slate-500 uppercase font-semibold mb-2">Passo 1 de 3: Qual foi a natureza do contato?</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <button onclick="nextFlowStep(2, 'percutaneo')" class="p-4 border border-slate-200 rounded-lg text-left hover:border-sus-primary hover:bg-slate-50 transition-all">
+                                <p class="font-bold text-slate-800 text-sm flex items-center gap-2"><i class="fa-solid fa-syringe text-red-500"></i> Lesão Percutânea / Punctura</p>
+                                <p class="text-xs text-slate-500 mt-1">Picada de agulha, corte com bisturi ou cacos de vidro com sangue.</p>
+                            </button>
+                            <button onclick="nextFlowStep(2, 'mucosa')" class="p-4 border border-slate-200 rounded-lg text-left hover:border-sus-primary hover:bg-slate-50 transition-all">
+                                <p class="font-bold text-slate-800 text-sm flex items-center gap-2"><i class="fa-solid fa-eye text-blue-500"></i> Exposição de Mucosa / Pele Íntegra</p>
+                                <p class="text-xs text-slate-500 mt-1">Respingos de sangue nos olhos, boca, nariz ou pele com ferimentos abertos.</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="flow-step-2" class="hidden">
+                        <p class="text-xs text-slate-500 uppercase font-semibold mb-2" id="flow-step-2-title">Passo 2 de 3: Cuidados Locais Imediatos</p>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg mb-4 text-xs text-slate-700 space-y-2" id="flow-step-2-content">
+                            <!-- Dynamic text injected here -->
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="resetFlowStep()" class="px-4 py-2 text-xs border border-slate-300 rounded hover:bg-slate-100 transition">Voltar</button>
+                            <button onclick="nextFlowStep(3)" class="px-4 py-2 text-xs bg-sus-primary text-white rounded hover:bg-sus-dark transition">Próximo Passo (Atendimento)</button>
+                        </div>
+                    </div>
+
+                    <div id="flow-step-3" class="hidden">
+                        <p class="text-xs text-slate-500 uppercase font-semibold mb-2">Passo 3 de 3: Encaminhamento e Profilaxia em Tempo Hábil (Janela de 2h)</p>
+                        <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg mb-4 text-xs text-slate-700 space-y-3">
+                            <p class="font-semibold text-amber-900 flex items-center gap-1">
+                                <i class="fa-solid fa-clock-rotate-left"></i> Tempo Ideal para Início da Profilaxia (PEP): Até 2 horas (Máximo 72h).
+                            </p>
+                            <p><strong>Unidades de Referência para Atendimento e Profilaxia na AP 5.1:</strong></p>
+                            <ul class="list-disc pl-5 space-y-1 text-slate-600">
+                                <li><strong>UPA Realengo:</strong> Av. de Santa Cruz, s/n - Realengo (Atendimento 24h).</li>
+                                <li><strong>Hospital Municipal Albert Schweitzer:</strong> R. Nilópolis, s/n - Realengo (Atendimento de Emergência).</li>
+                                <li><strong>UPA Bangu:</strong> R. Francisco Real, s/n - Bangu.</li>
+                            </ul>
+                            <div class="p-2 bg-white rounded border border-amber-200 mt-2">
+                                <p class="font-bold text-slate-800">Documentação e Registro Técnico:</p>
+                                <ul class="list-disc pl-5 text-[11px] text-slate-500">
+                                    <li>Notificar a Vigilância Epidemiológica via SINAN em até 24h.</li>
+                                    <li>Emitir a Comunicação de Acidente de Trabalho (CAT) em até 24h para celetistas.</li>
+                                    <li>Realizar testes rápidos para HIV, Hepatites B e C no profissional e, se possível/identificado, no usuário-fonte.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button onclick="resetFlowStep()" class="px-4 py-2 text-xs border border-slate-300 rounded hover:bg-slate-100 transition">Reiniciar Guia</button>
+                    </div>
+                </div>
+
+                <script>
+                    let selectedNature = '';
+                    function nextFlowStep(step, nature = '') {
+                        if (step === 2) {
+                            selectedNature = nature;
+                            document.getElementById('flow-step-1').classList.add('hidden');
+                            document.getElementById('flow-step-2').classList.remove('hidden');
+                            
+                            const content = document.getElementById('flow-step-2-content');
+                            if (nature === 'percutaneo') {
+                                document.getElementById('flow-step-2-title').innerText = 'Passo 2: Cuidados Locais (Puncturas/Cortes)';
+                                content.innerHTML = `
+                                    <p class="font-bold text-red-700"><i class="fa-solid fa-circle-exclamation"></i> O que fazer imediatamente:</p>
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li>Lavar abundantemente o local da punctura com <strong>água corrente e sabão neutro</strong>.</li>
+                                        <li><strong>Proibido espremer, forçar sangramento</strong>, realizar cortes ou aplicar álcool/produtos químicos irritantes na ferida, pois isso amplia o processo inflamatório facilitando a entrada de patógenos.</li>
+                                    </ul>
+                                `;
+                            } else {
+                                document.getElementById('flow-step-2-title').innerText = 'Passo 2: Cuidados Locais (Mucosas/Pele Íntegra)';
+                                content.innerHTML = `
+                                    <p class="font-bold text-blue-700"><i class="fa-solid fa-circle-exclamation"></i> O que fazer imediatamente:</p>
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li>Se a contaminação ocorreu no olho, <strong>lavar com soro fisiológico</strong> ou água corrente abundantemente.</li>
+                                        <li>Se foi na boca ou cavidade oral, realizar bochechos com água e expelir.</li>
+                                        <li>Não friccionar de forma abrasiva. Lave de forma suave.</li>
+                                    </ul>
+                                `;
+                            }
+                        } else if (step === 3) {
+                            document.getElementById('flow-step-2').classList.add('hidden');
+                            document.getElementById('flow-step-3').classList.remove('hidden');
+                        }
+                    }
+
+                    function resetFlowStep() {
+                        document.getElementById('flow-step-1').classList.remove('hidden');
+                        document.getElementById('flow-step-2').classList.add('hidden');
+                        document.getElementById('flow-step-3').classList.add('hidden');
+                        selectedNature = '';
+                    }
+                </script>
+            </section>
+
+            <!-- 10. GERENCIAMENTO DE RESÍDUOS -->
+            <section id="sec-10" class="mb-10 section-block">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="bg-sus-primary text-white p-1 rounded"><i class="fa-solid fa-trash-can w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">10) Gerenciamento de Resíduos (ANVISA RDC 222/2018)</h3>
+                </div>
+                <p class="text-slate-700 leading-relaxed text-sm mb-4">
+                    Pela modalidade volante de assistência, os resíduos gerados nos atendimentos de campo do CnaR devem ser devidamente segregados na origem e acondicionados segundo a legislação sanitária.
+                </p>
+
+                <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 border-b border-slate-200 text-slate-700 font-bold uppercase">
+                                <th class="p-3 w-1/5">Grupo/Resíduo</th>
+                                <th class="p-3 w-1/5">Acondicionamento</th>
+                                <th class="p-3 w-2/5">Exemplos no Consultório na Rua</th>
+                                <th class="p-3 w-1/5">Conduta / Destino</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-slate-600">
+                            <tr>
+                                <td class="p-3">
+                                    <span class="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-1 rounded">GRUPO A (Infectante)</span>
+                                </td>
+                                <td class="p-3 font-medium">Saco plástico branco leitoso devidamente identificado com o símbolo internacional de risco biológico.</td>
+                                <td class="p-3">Gaze e algodão sujos de fluidos corporais, coberturas de curativos saturadas, lancetas não protegidas, luvas usadas, sobras de vacinas.</td>
+                                <td class="p-3">Descarte em abrigo interno na base de apoio para tratamento especial (Autoclavagem/Incineração).</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3">
+                                    <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-1 rounded">GRUPO B (Químico)</span>
+                                </td>
+                                <td class="p-3 font-medium">Recipiente rígido, inquebrável, resistente à corrosão e compatível com o produto químico.</td>
+                                <td class="p-3">Restos de saneantes, frascos vazios de produtos químicos fracionados de desinfecção da van.</td>
+                                <td class="p-3">Destinação conforme PGRSS municipal de acordo com as normas de resíduos perigosos.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3">
+                                    <span class="bg-slate-100 text-slate-800 text-[10px] font-bold px-2 py-1 rounded">GRUPO D (Comum)</span>
+                                </td>
+                                <td class="p-3 font-medium">Saco plástico de cor neutra (cinza, azul ou preto) de lixo comum doméstico.</td>
+                                <td class="p-3">Papéis de escritório, copos plásticos de água descartáveis, embalagens limpas de insumos médicos.</td>
+                                <td class="p-3">Coleta pública regular urbana municipal da Comlurb.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3">
+                                    <span class="bg-yellow-100 text-yellow-800 text-[10px] font-bold px-2 py-1 rounded">GRUPO E (Perfurocortantes)</span>
+                                </td>
+                                <td class="p-3 font-medium">Coletor rígido de papelão/plástico específico para descarte de agulhas e vidrarias.</td>
+                                <td class="p-3">Agulhas utilizadas de seringas, lancetas de glicemia capilar, bisturis, ampolas de vidro quebradas de medicamentos.</td>
+                                <td class="p-3">Tratamento por incineração ou autoclavagem com empresas licenciadas integradas ao PGRSS municipal.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 11. IMUNIZAÇÃO DA EQUIPE -->
+            <section id="sec-11" class="mb-10 section-block">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="bg-sus-primary text-white p-1 rounded"><i class="fa-solid fa-syringe w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">11) Imunização da Equipe</h3>
+                </div>
+                <div class="text-sm text-slate-700 space-y-3">
+                    <p>
+                        A todos os trabalhadores do serviço de saúde, inclusive atuantes do CnaR, deve ser fornecido gratuitamente programa de imunização ativa conforme preconizado pelo <strong>PCMSO</strong> municipal. O profissional de saúde em campo de alta vulnerabilidade social deve manter obrigatoriamente atualizadas as seguintes vacinas:
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                        <div class="p-3 border border-slate-200 rounded-lg bg-slate-50 flex items-start gap-2">
+                            <i class="fa-solid fa-square-check text-emerald-600 mt-1"></i>
+                            <div>
+                                <p class="font-bold text-xs text-slate-800">Hepatite B</p>
+                                <p class="text-[11px] text-slate-500">Esquema vacinal de 3 doses com avaliação de sorologia Anti-HBs quantitativo pós-vacina.</p>
+                            </div>
+                        </div>
+                        <div class="p-3 border border-slate-200 rounded-lg bg-slate-50 flex items-start gap-2">
+                            <i class="fa-solid fa-square-check text-emerald-600 mt-1"></i>
+                            <div>
+                                <p class="font-bold text-xs text-slate-800">Dupla Adulto (dT - Tétano e Difteria)</p>
+                                <p class="text-[11px] text-slate-500">Reforço vacinal a cada 10 anos (ou a cada 5 anos em caso de ferimentos profundos expostos).</p>
+                            </div>
+                        </div>
+                        <div class="p-3 border border-slate-200 rounded-lg bg-slate-50 flex items-start gap-2">
+                            <i class="fa-solid fa-square-check text-emerald-600 mt-1"></i>
+                            <div>
+                                <p class="font-bold text-xs text-slate-800">Tríplice Viral (Sarampo, Caxumba e Rubéola)</p>
+                                <p class="text-[11px] text-slate-500">Duas doses para profissionais de saúde até os 29 anos de idade ou dose única após essa idade.</p>
+                            </div>
+                        </div>
+                        <div class="p-3 border border-slate-200 rounded-lg bg-slate-50 flex items-start gap-2">
+                            <i class="fa-solid fa-square-check text-emerald-600 mt-1"></i>
+                            <div>
+                                <p class="font-bold text-xs text-slate-800">Febre Amarela e Influenza</p>
+                                <p class="text-[11px] text-slate-500">Dose única de febre amarela e dose anual sazonal da vacina contra Influenza (gripe).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 12. CHECKLIST DIÁRIO INTERATIVO -->
+            <section id="sec-checklist" class="mb-10 section-block bg-emerald-50/40 p-4 md:p-6 rounded-xl border border-emerald-200">
+                <div class="flex items-center gap-2 mb-4 border-b border-emerald-200 pb-2">
+                    <span class="bg-emerald-600 text-white p-1 rounded"><i class="fa-solid fa-circle-check w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">12) Checklist Diário de Biossegurança (Interativo)</h3>
+                </div>
+                
+                <p class="text-xs text-slate-600 mb-4">
+                    <strong>Atribuição do Técnico de Enfermagem:</strong> Antes da saída às ruas no território da AP 5.1, o profissional deve verificar os itens da van e registrar a conformidade.
+                </p>
+
+                <!-- INTERACTIVE CHECKLIST COMPONENT -->
+                <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm space-y-4">
+                    
+                    <!-- Metadata Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs mb-4">
+                        <div>
+                            <label class="block text-slate-600 font-bold mb-1">Nome do Profissional Responsável:</label>
+                            <input type="text" id="chk-resp" placeholder="Nome Completo / Matrícula" class="w-full p-2 border border-slate-300 rounded focus:ring-1 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-slate-600 font-bold mb-1">Data da Inspeção:</label>
+                            <input type="date" id="chk-data" class="w-full p-2 border border-slate-300 rounded focus:ring-1 focus:ring-emerald-500">
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs font-bold text-slate-700">
+                            <span>Conformidade dos Equipamentos:</span>
+                            <span id="compliancePercent">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-200 rounded-full h-3">
+                            <div id="complianceBar" class="bg-emerald-500 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Checklist Table -->
+                    <div class="space-y-2 mt-4 text-xs">
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-200 hover:bg-slate-100 transition">
+                            <label for="item1" class="flex items-center gap-3 font-semibold text-slate-800 cursor-pointer">
+                                <input type="checkbox" id="item1" onchange="calculateCompliance()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+                                EPIs disponíveis (PFF2/N95, Máscara Cirúrgica, Aventais e Luvas)
+                            </label>
+                            <span class="text-[10px] text-slate-400 font-mono">POP-5.1/5.2</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-200 hover:bg-slate-100 transition">
+                            <label for="item2" class="flex items-center gap-3 font-semibold text-slate-800 cursor-pointer">
+                                <input type="checkbox" id="item2" onchange="calculateCompliance()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+                                Álcool 70% Portátil e borrifador disponíveis para a equipe
+                            </label>
+                            <span class="text-[10px] text-slate-400 font-mono">POP-5.5</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-200 hover:bg-slate-100 transition">
+                            <label for="item3" class="flex items-center gap-3 font-semibold text-slate-800 cursor-pointer">
+                                <input type="checkbox" id="item3" onchange="calculateCompliance()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+                                Caixa de descarte de perfurocortantes montada e dentro do limite (&lt;5cm abaixo do bocal)
+                            </label>
+                            <span class="text-[10px] text-slate-400 font-mono">POP-8</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-200 hover:bg-slate-100 transition">
+                            <label for="item4" class="flex items-center gap-3 font-semibold text-slate-800 cursor-pointer">
+                                <input type="checkbox" id="item4" onchange="calculateCompliance()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+                                Maleta estanque limpa, organizada e sem vazamento estrutural
+                            </label>
+                            <span class="text-[10px] text-slate-400 font-mono">POP-5.5</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-200 hover:bg-slate-100 transition">
+                            <label for="item5" class="flex items-center gap-3 font-semibold text-slate-800 cursor-pointer">
+                                <input type="checkbox" id="item5" onchange="calculateCompliance()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+                                Sacos plásticos sobressalentes para destinação de resíduos (brancos leitosos e neutros)
+                            </label>
+                            <span class="text-[10px] text-slate-400 font-mono">POP-10</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-200 hover:bg-slate-100 transition">
+                            <label for="item6" class="flex items-center gap-3 font-semibold text-slate-800 cursor-pointer">
+                                <input type="checkbox" id="item6" onchange="calculateCompliance()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+                                Caixa térmica para transporte de material biológico higienizada e operacional
+                            </label>
+                            <span class="text-[10px] text-slate-400 font-mono">Anexo I</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col md:flex-row gap-3 pt-3 border-t border-slate-200">
+                        <button onclick="generateReport()" class="flex-1 bg-emerald-600 text-white text-xs font-bold py-2.5 px-4 rounded hover:bg-emerald-700 transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-file-export"></i> Gerar Relatório de Conformidade
+                        </button>
+                        <button onclick="resetChecklist()" class="bg-slate-100 border border-slate-300 text-slate-700 text-xs py-2 px-4 rounded hover:bg-slate-200 transition">
+                            Limpar Tudo
+                        </button>
+                    </div>
+
+                    <!-- Report Textarea Output (Hidden by default, shown upon generation) -->
+                    <div id="reportBox" class="hidden p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-2 mt-4 transition-all">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-bold text-slate-700">Relatório Pronto para Copiar (WhatsApp / Relatórios):</span>
+                            <button onclick="copyToClipboard()" class="text-xs text-sus-primary font-semibold hover:underline flex items-center gap-1">
+                                <i class="fa-solid fa-copy"></i> Copiar Texto
+                            </button>
+                        </div>
+                        <label for="reportOutput" class="sr-only">Conteúdo do relatório gerado</label>
+                        <textarea id="reportOutput" rows="5" readonly class="w-full p-2 bg-white border border-slate-300 rounded font-mono text-[11px] text-slate-700 focus:outline-none"></textarea>
+                    </div>
+
+                </div>
+
+                <script>
+                    // Set current date in input
+                    document.getElementById('chk-data').valueAsDate = new Date();
+
+                    function calculateCompliance() {
+                        const checkboxes = [
+                            document.getElementById('item1'),
+                            document.getElementById('item2'),
+                            document.getElementById('item3'),
+                            document.getElementById('item4'),
+                            document.getElementById('item5'),
+                            document.getElementById('item6')
+                        ];
+                        const checkedCount = checkboxes.filter(chk => chk.checked).length;
+                        const percent = Math.round((checkedCount / checkboxes.length) * 100);
+                        
+                        document.getElementById('compliancePercent').innerText = percent + "%";
+                        document.getElementById('complianceBar').style.width = percent + "%";
+
+                        // Color shifts depending on checklist safety level
+                        const bar = document.getElementById('complianceBar');
+                        if (percent < 50) {
+                            bar.className = "bg-red-500 h-3 rounded-full transition-all duration-300";
+                        } else if (percent < 100) {
+                            bar.className = "bg-amber-500 h-3 rounded-full transition-all duration-300";
+                        } else {
+                            bar.className = "bg-emerald-500 h-3 rounded-full transition-all duration-300";
+                        }
+                    }
+
+                    function generateReport() {
+                        const resp = document.getElementById('chk-resp').value || 'Profissional Não Identificado';
+                        const rawDate = document.getElementById('chk-data').value;
+                        const dataVal = rawDate ? new Date(rawDate).toLocaleDateString('pt-BR') : new Date().toLocaleDateString('pt-BR');
+                        
+                        const items = [
+                            { name: 'EPIs Disponíveis', checked: document.getElementById('item1').checked },
+                            { name: 'Álcool 70% Portátil', checked: document.getElementById('item2').checked },
+                            { name: 'Caixa de Perfurocortantes OK', checked: document.getElementById('item3').checked },
+                            { name: 'Maleta Estanque Limpa', checked: document.getElementById('item4').checked },
+                            { name: 'Sacos para Resíduos', checked: document.getElementById('item5').checked },
+                            { name: 'Caixa Térmica Higienizada', checked: document.getElementById('item6').checked }
+                        ];
+
+                        const checkedCount = items.filter(i => i.checked).length;
+                        const percent = Math.round((checkedCount / items.length) * 100);
+                        const listStatus = items.map(i => `${i.checked ? '✅' : '❌'} ${i.name}`).join('\n');
+
+                        let msg = `📋 *RELATÓRIO DIÁRIO DE BIOSSEGURANÇA - CnaR AP 5.1*\n`;
+                        msg += `📅 Data: ${dataVal}\n`;
+                        msg += `👤 Técnico Responsável: ${resp}\n`;
+                        msg += `📊 Conformidade Geral: ${percent}%\n`;
+                        msg += `------------------------------------\n`;
+                        msg += `${listStatus}\n`;
+                        msg += `------------------------------------\n`;
+                        
+                        if (percent === 100) {
+                            msg += `🚀 Equipe autorizada para atividades de rua com biossegurança completa!`;
+                        } else {
+                            msg += `⚠️ Alerta: Existem pendências de biossegurança pendentes antes da saída territorial!`;
+                        }
+
+                        document.getElementById('reportOutput').value = msg;
+                        document.getElementById('reportBox').classList.remove('hidden');
+                    }
+
+                    function copyToClipboard() {
+                        const copyText = document.getElementById("reportOutput");
+                        copyText.select();
+                        copyText.setSelectionRange(0, 99999);
+                        navigator.clipboard.writeText(copyText.value);
+                        alert("Relatório copiado para a área de transferência!");
+                    }
+
+                    function resetChecklist() {
+                        document.getElementById('item1').checked = false;
+                        document.getElementById('item2').checked = false;
+                        document.getElementById('item3').checked = false;
+                        document.getElementById('item4').checked = false;
+                        document.getElementById('item5').checked = false;
+                        document.getElementById('item6').checked = false;
+                        document.getElementById('chk-resp').value = '';
+                        document.getElementById('chk-data').valueAsDate = new Date();
+                        calculateCompliance();
+                        document.getElementById('reportBox').classList.add('hidden');
+                    }
+                </script>
+            </section>
+
+            <!-- 13. REFERÊNCIAS -->
+            <section id="sec-13" class="mb-10 section-block">
+                <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
+                    <span class="bg-sus-primary text-white p-1 rounded"><i class="fa-solid fa-bookmark w-5 text-center"></i></span>
+                    <h3 class="text-lg font-bold text-slate-900">13) Referências</h3>
+                </div>
+                <div class="text-xs text-slate-600 space-y-3 leading-relaxed">
+                    <p>
+                        <strong>NR-32 - Segurança e Saúde no Trabalho em Serviços de Saúde</strong>, aprovada pela Portaria MTE nº 485/2005, com alterações posteriores vigentes até Portaria MTP nº 4.219/2022. Disponível em: <a href="https://www.gov.br" target="_blank" class="text-sus-primary underline">gov.br/trabalho-e-emprego</a>.
+                    </p>
+                    <p>
+                        <strong>BRASIL. Ministério do Trabalho e Previdência.</strong> Norma Regulamentadora nº 06 (NR-06) - Equipamentos de Proteção Individual - EPI. Portaria MTb nº 3.214 de 1978. Atualizada em 2022.
+                    </p>
+                    <p>
+                        <strong>BRASIL. Ministério do Trabalho e Previdência.</strong> Norma Regulamentadora nº 09 (NR-09) - Avaliação e Controle das Exposições Ocupacionais a Agentes Físicos, Químicos e Biológicos.
+                    </p>
+                    <p>
+                        <strong>BRASIL. Ministério do Trabalho e Emprego.</strong> Norma Regulamentadora nº 15 (NR-15) - Atividades e Operações Insalubres. Portaria MTE nº 2.021, de 03 de dezembro de 2025.
+                    </p>
+                    <p>
+                        <strong>ANVISA. Resolução RDC nº 222, de 28 de março de 2018.</strong> Boas Práticas de Gerenciamento de Resíduos de Serviços de Saúde (PGRSS).
+                    </p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p><strong>Prefeitura da Cidade do Rio de Janeiro - Secretaria Municipal de Saúde (SMS)</strong></p>
+            <p>Coordenação de Atenção Primária - AP 5.1 (Bangu, Realengo e adjacências)</p>
+            <p class="text-[11px] text-slate-500">Desenvolvido com fins de otimização operacional e educação continuada em biossegurança para equipes multiprofissionais de Consultório na Rua.</p>
+        </div>
+    </footer>
+
+    <!-- SCROLL AND FILTER JAVASCRIPT -->
+    <script>
+        // Smooth scroll to sections and handle active visual indicators
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                // Determine header offset
+                const offset = 80;
+                const elementPosition = el.getBoundingClientRect().top + window.scrollY;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Highlight active navigation items based on current scroll position
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section-block');
+            const navButtons = document.querySelectorAll('.nav-btn');
+            
+            let currentActiveId = 'sec-header';
+            
+            sections.forEach(sec => {
+                const rect = sec.getBoundingClientRect();
+                // If section is near the top of viewport, mark it active
+                if (rect.top <= 120) {
+                    currentActiveId = sec.id;
+                }
+            });
+
+            navButtons.forEach(btn => {
+                const onClickAttr = btn.getAttribute('onclick');
+                if (onClickAttr && onClickAttr.includes(currentActiveId)) {
+                    btn.classList.add('bg-sus-light', 'text-sus-primary', 'border-sus-primary');
+                    btn.classList.remove('text-slate-600', 'border-transparent');
+                } else {
+                    btn.classList.remove('bg-sus-light', 'text-sus-primary', 'border-sus-primary');
+                    // Avoid overriding custom highlights for accidents & checklist unless inactive
+                    if (onClickAttr && onClickAttr.includes('sec-checklist')) {
+                        btn.classList.add('text-emerald-700', 'bg-emerald-50');
+                    } else if (onClickAttr && onClickAttr.includes('sec-9')) {
+                        btn.classList.add('text-amber-700', 'bg-amber-50');
+                    } else {
+                        btn.classList.add('text-slate-600', 'border-transparent');
+                    }
+                }
+            });
+        });
+
+        // Filter sections based on real-time search terms
+        function filterSections() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const sections = document.querySelectorAll('.section-block');
+            
+            sections.forEach(sec => {
+                const text = sec.innerText.toLowerCase();
+                if (text.includes(input)) {
+                    sec.style.opacity = '1';
+                    sec.style.display = 'block';
+                } else {
+                    sec.style.opacity = '0.3';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
